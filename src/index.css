@@ -1,0 +1,330 @@
+@import "tailwindcss";
+
+@layer base {
+  html,
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    color: #1e293b;
+    background-color: #f8fafc;
+    overflow-x: hidden;
+    max-width: 100vw;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  /* Smooth transition for interactive cards, buttons, badges, and inputs */
+  div,
+  header,
+  nav,
+  section,
+  article,
+  button,
+  input,
+  select,
+  textarea,
+  span,
+  label {
+    transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Keyframe animations for modals & mobile bottom sheets */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpSheet {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hide scrollbar for clean horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ==========================================================================
+   AUTOMATIC SYSTEM DARK MODE (@media (prefers-color-scheme: dark))
+   Preserves icon & badge legibility while adapting all surfaces & text
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #0b1120;
+    color: #f1f5f9;
+    color-scheme: dark;
+  }
+
+  /* Primary Backgrounds */
+  .bg-slate-50,
+  .bg-slate-50\/50,
+  .bg-slate-50\/80 {
+    background-color: #0f172a !important;
+  }
+
+  .bg-white {
+    background-color: #1e293b !important;
+  }
+
+  .bg-white\/90,
+  .bg-white\/95,
+  .bg-white\/80,
+  .bg-white\/70,
+  .bg-white\/60 {
+    background-color: rgba(30, 41, 59, 0.92) !important;
+  }
+
+  .bg-slate-100 {
+    background-color: #0f172a !important;
+  }
+
+  .bg-slate-200,
+  .bg-slate-200\/80 {
+    background-color: #334155 !important;
+  }
+
+  /* Keep QR Code wrappers white for reliable camera scanning */
+  .qr-code-surface {
+    background-color: #ffffff !important;
+  }
+
+  /* Borders & Dividers */
+  .border-slate-100 {
+    border-color: #1e293b !important;
+  }
+
+  .border-slate-200,
+  .border-slate-300 {
+    border-color: #334155 !important;
+  }
+
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: #334155 !important;
+  }
+
+  /* Typography */
+  .text-slate-950,
+  .text-slate-900,
+  .text-slate-800 {
+    color: #f8fafc !important;
+  }
+
+  .text-slate-700,
+  .text-slate-600 {
+    color: #cbd5e1 !important;
+  }
+
+  .text-slate-500,
+  .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+
+  /* Preserve dark text when inside bright solid badges (e.g. bg-amber-400, bg-amber-500, bg-emerald-500) */
+  .bg-amber-400.text-slate-950,
+  .bg-amber-500.text-slate-950,
+  .bg-emerald-500.text-slate-950,
+  .bg-amber-400 .text-slate-950,
+  .bg-amber-500 .text-slate-950 {
+    color: #0f172a !important;
+  }
+
+  /* Inputs, Selects & Textareas */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  select,
+  textarea {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #64748b !important;
+  }
+
+  /* Tinted Alert & Badge Surfaces — High Contrast in Dark Mode */
+  .bg-emerald-50,
+  .bg-emerald-50\/20,
+  .bg-emerald-50\/30,
+  .bg-emerald-50\/40,
+  .bg-emerald-50\/50,
+  .bg-emerald-50\/60,
+  .bg-emerald-50\/70,
+  .bg-emerald-50\/80,
+  .bg-emerald-50\/90 {
+    background-color: rgba(16, 185, 129, 0.14) !important;
+  }
+  .bg-emerald-100 {
+    background-color: rgba(16, 185, 129, 0.24) !important;
+  }
+  .border-emerald-200,
+  .border-emerald-300 {
+    border-color: rgba(52, 211, 153, 0.35) !important;
+  }
+  .text-emerald-950,
+  .text-emerald-900,
+  .text-emerald-800,
+  .text-emerald-700 {
+    color: #6ee7b7 !important;
+  }
+
+  .bg-amber-50,
+  .bg-amber-50\/30,
+  .bg-amber-50\/40,
+  .bg-amber-50\/50,
+  .bg-amber-50\/70,
+  .bg-amber-50\/80,
+  .bg-amber-50\/90 {
+    background-color: rgba(245, 158, 11, 0.16) !important;
+  }
+  .bg-amber-100,
+  .bg-amber-200,
+  .bg-amber-200\/70 {
+    background-color: rgba(245, 158, 11, 0.26) !important;
+  }
+  .border-amber-200,
+  .border-amber-200\/60,
+  .border-amber-300 {
+    border-color: rgba(251, 191, 36, 0.4) !important;
+  }
+  .text-amber-950,
+  .text-amber-900,
+  .text-amber-800,
+  .text-amber-700 {
+    color: #fde68a !important;
+  }
+
+  .bg-indigo-50,
+  .bg-indigo-50\/40,
+  .bg-indigo-50\/60,
+  .bg-indigo-50\/70,
+  .bg-indigo-50\/80 {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+  }
+  .bg-indigo-100 {
+    background-color: rgba(99, 102, 241, 0.25) !important;
+  }
+  .border-indigo-200,
+  .border-indigo-300 {
+    border-color: rgba(129, 140, 248, 0.35) !important;
+  }
+  .text-indigo-950,
+  .text-indigo-900,
+  .text-indigo-800,
+  .text-indigo-700 {
+    color: #a5b4fc !important;
+  }
+
+  .bg-rose-50,
+  .bg-rose-50\/30,
+  .bg-rose-50\/50 {
+    background-color: rgba(244, 63, 94, 0.15) !important;
+  }
+  .bg-rose-100 {
+    background-color: rgba(244, 63, 94, 0.25) !important;
+  }
+  .border-rose-200,
+  .border-rose-300 {
+    border-color: rgba(251, 113, 133, 0.35) !important;
+  }
+  .text-rose-950,
+  .text-rose-900,
+  .text-rose-800,
+  .text-rose-700,
+  .text-rose-600 {
+    color: #fda4af !important;
+  }
+
+  .bg-sky-50,
+  .bg-sky-50\/50 {
+    background-color: rgba(14, 165, 233, 0.15) !important;
+  }
+  .bg-sky-100 {
+    background-color: rgba(14, 165, 233, 0.25) !important;
+  }
+  .border-sky-200,
+  .border-sky-300 {
+    border-color: rgba(56, 189, 248, 0.35) !important;
+  }
+  .text-sky-900,
+  .text-sky-800,
+  .text-sky-700,
+  .text-sky-600 {
+    color: #7dd3fc !important;
+  }
+
+  .bg-pink-50,
+  .bg-pink-50\/50 {
+    background-color: rgba(236, 72, 153, 0.15) !important;
+  }
+  .bg-pink-100 {
+    background-color: rgba(236, 72, 153, 0.25) !important;
+  }
+  .border-pink-200 {
+    border-color: rgba(244, 114, 182, 0.35) !important;
+  }
+  .text-pink-900,
+  .text-pink-800,
+  .text-pink-700 {
+    color: #f9a8d4 !important;
+  }
+
+  .bg-orange-50 {
+    background-color: rgba(249, 115, 22, 0.15) !important;
+  }
+  .text-orange-800,
+  .text-orange-700 {
+    color: #fdba74 !important;
+  }
+
+  /* Primary Dark Buttons (.bg-slate-900) in Dark Mode -> Crisp elevated slate/indigo button */
+  button.bg-slate-900,
+  .bg-slate-900.text-white:not(header):not(div) {
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+  }
+
+  button.bg-slate-900:hover {
+    background-color: #475569 !important;
+  }
+}

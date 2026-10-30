@@ -1,0 +1,52 @@
+name: Build Android APK (Capacitor + InAppBrowser)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout du code source
+        uses: actions/checkout@v4
+
+      - name: 2. Installation de Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 3. Installation de Java JDK 21 (requis par Android Gradle)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: 4. Installation des dépendances Web & Capacitor + InAppBrowser
+        run: |
+          npm install
+          npm install @capacitor/core @capacitor/cli @capacitor/android cordova-plugin-inappbrowser
+
+      - name: 5. Build de l'application React/Vite dans /dist
+        run: npm run build
+
+      - name: 6. Génération et synchronisation du projet Android Capacitor
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          npx cap sync android
+
+      - name: 7. Compilation de l'APK Android (assembleDebug)
+        working-directory: ./android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: 8. Publication du fichier APK prêt à installer sur téléphone
+        uses: actions/upload-artifact@v4
+        with:
+          name: doudous-home-android-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

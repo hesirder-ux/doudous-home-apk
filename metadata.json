@@ -1,0 +1,6 @@
+{
+  "name": "FrigoFamille",
+  "description": "Application familiale mobile de gestion du frigo, recettes anti-gaspi, planification de repas selon le budget et cartes de fidélité géolocalisées.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
