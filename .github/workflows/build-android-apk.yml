@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: 3. Installation de Java JDK 21 (requis par Android Gradle)
         uses: actions/setup-java@v4
@@ -24,28 +23,73 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: 4. Installation des dépendances Web & Capacitor + InAppBrowser
+      - name: 4. Préparation de package.json et capacitor.config.json pour npm public
         run: |
-          npm install
-          npm install @capacitor/core @capacitor/cli @capacitor/android cordova-plugin-inappbrowser
+          rm -f capacitor.config.ts
+          cat << 'EOF' > package.json
+          {
+            "name": "doudous-home-apk",
+            "private": true,
+            "version": "1.0.0",
+            "type": "module",
+            "scripts": {
+              "build": "vite build"
+            },
+            "dependencies": {
+              "react": "^19.0.0",
+              "react-dom": "^19.0.0",
+              "lucide-react": "^0.475.0",
+              "motion": "^12.4.7",
+              "@capacitor/core": "^7.0.0",
+              "@capacitor/cli": "^7.0.0",
+              "@capacitor/android": "^7.0.0",
+              "cordova-plugin-inappbrowser": "^6.0.0"
+            },
+            "devDependencies": {
+              "vite": "^6.2.0",
+              "@vitejs/plugin-react": "^4.3.4",
+              "@tailwindcss/vite": "^4.0.9",
+              "tailwindcss": "^4.0.9",
+              "typescript": "^5.7.3"
+            }
+          }
+          EOF
+          cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "com.doudoushome.courses",
+            "appName": "Doudous Home",
+            "webDir": "dist",
+            "server": {
+              "androidScheme": "https",
+              "cleartext": true
+            },
+            "android": {
+              "allowMixedContent": true,
+              "captureInput": true,
+              "webContentsDebuggingEnabled": true
+            }
+          }
+          EOF
 
-      - name: 5. Build de l'application React/Vite dans /dist
+      - name: 5. Installation des dépendances Web & Capacitor + InAppBrowser
+        run: npm install --no-audit --no-fund
+
+      - name: 6. Build de l'application React/Vite dans /dist
         run: npm run build
 
-      - name: 6. Génération et synchronisation du projet Android Capacitor
+      - name: 7. Génération et synchronisation du projet Android Capacitor
         run: |
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
+          rm -rf android
+          npx cap add android
           npx cap sync android
 
-      - name: 7. Compilation de l'APK Android (assembleDebug)
+      - name: 8. Compilation de l'APK Android (assembleDebug)
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
-      - name: 8. Publication du fichier APK prêt à installer sur téléphone
+      - name: 9. Publication du fichier APK prêt à installer sur téléphone
         uses: actions/upload-artifact@v4
         with:
           name: doudous-home-android-apk

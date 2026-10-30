@@ -4,7 +4,7 @@
  */
 const config = {
   appId: 'com.doudoushome.courses',
-  appName: "Doudou's Home",
+  appName: 'Doudous Home',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
